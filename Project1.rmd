@@ -1,0 +1,175 @@
+---
+title: "Project1"
+author: "Sarba"
+date: "11/23/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(tidyverse)
+library(moderndive)
+```
+
+
+```{r}
+# Importing data
+data <- read_csv("/home/upretys/STA 518/Project/Project1/data.csv")
+```
+```{r}
+# Dropping NAs
+data <- data %>%
+  drop_na()
+```
+
+```{r}
+# Calculating mean of each columns without using for loop
+
+# Calculating the average age of participants
+mean(data$age)
+
+# Calculating the average elapsed time
+mean(data$elapse)
+
+# Calculating the average score
+mean(data$score)
+```
+
+
+
+```{r} 
+# Calculating median of each column using for loop
+output <- vector("double", ncol(df))
+for (i in seq_along(df)) {            
+  output[[i]] <- median(df[[i]]) }
+
+```
+
+
+```{r}
+max(data$age)
+```
+
+```{r}
+# Isolating score, elapse, gender, and age from a larger dataset)
+df <- data %>%
+  select(score,elapse:age) %>%
+  mutate(Number = sample(1:11243))
+```
+
+
+```{r}
+#Removig Data
+#rm(cleaned_data)
+#rm(data)
+#rm(highest_top10)
+#rm(lowest_top10)
+#rm(top10)
+#rm(df)
+```
+
+
+```{r}
+# Replacing the values "1" and "2" in "Gender" column to "Male" and "Female"
+df <- within(df, gender[gender == '1'] <- 'Male')
+df <- within(df, gender[gender == '2'] <- 'Female')
+df <- within(df, gender[gender == '3'] <- 'Non-Binary')
+df <- within(df, gender[gender == '0'] <- 'Not Specified')
+```
+
+
+
+```{r}
+# Arranging the scores in a descending order to find the top 10 highest scoring age a
+highest_top10 <- df %>%
+  arrange(desc(score)) %>%
+  slice(1:10)
+top_n(df, 10, score)
+
+# Arranging the scores in an ascending order to find the top 10 least scoring age
+lowest_top10 <- df %>%
+  arrange(score) %>%
+  slice(1:10)
+```
+
+```{r}
+# Data Visualization to find the total number of people of certain age.
+ggplot(data = df) +
+  geom_freqpoly(mapping = aes(x = age))
+
+# Data Visualization to find the total number of people who identify with a certain gender.
+ggplot(data = df) +
+  geom_bar(mapping = aes(x = gender))
+```
+
+```{r}
+# Random sampling to find out the proportions of females in the dataset
+
+#Taking 50 samples:
+females_sample_50 <- df %>% 
+  rep_sample_n(size = 50, reps = 1000)
+
+females_proportion_50 <- females_sample_50 %>% 
+  group_by(Number) %>% 
+  summarize(female = sum(gender == "Female")) %>% 
+  mutate(proportion_females = female / 50)
+
+ggplot(females_proportion_50, aes(x = proportion_females)) +
+  geom_histogram(binwidth = 0.05, boundary = 0.4, color = "red") +
+  labs(x = "Proportion of females", title = "50") 
+```
+
+```{r}
+#Taking 100 samples:
+females_sample_100 <- df %>% 
+  rep_sample_n(size = 100, reps = 1000)
+
+females_proportion_100 <- females_sample_100 %>% 
+  group_by(Number) %>% 
+  summarize(female = sum(gender == "Female")) %>% 
+  mutate(proportion_females = female / 100)
+
+ggplot(females_proportion_100, aes(x = proportion_females)) +
+  geom_histogram(binwidth = 0.05, boundary = 0.4, color = "red") +
+  labs(x = "Proportion of females", title = "100")
+```
+
+```{r}
+#Taking 1000 samples:
+
+females_sample_1000 <- df %>% 
+  rep_sample_n(size = 1000, reps = 1000)
+
+females_proportion_1000 <- females_sample_1000 %>% 
+  group_by(Number) %>% 
+  summarize(female = sum(gender == "Female")) %>% 
+  mutate(proportion_females = female / 1000)
+
+ggplot(females_proportion_1000, aes(x = proportion_females)) +
+  geom_histogram(binwidth = 0.05, boundary = 0.4, color = "red") +
+  labs(x = "Proportion of females", title = "1000")
+```
+
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
