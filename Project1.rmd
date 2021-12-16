@@ -70,9 +70,10 @@ The original dataset had a lot of columns that were not very relevant. So, I use
 med <- vector("double", ncol(df))
 for (i in sequence(ncol(df))) { 
   med[i] = median(df[[i]]) 
-  }
+}
+med
 ```
-
+Here, I have used for loop to go through each column in the dataset and compute the median of the values of those columns. In the dataset I am using for this project, there are only five columns so I could have done it without the loop too, but I wanted to demonstrate the idea that if there were infinite columns, this would be the best approach as it reduces the codes from being repetitive and is time-efficient as well. 
 
 
 ```{r}
@@ -173,4 +174,4 @@ ggplot(females_proportion_1000, aes(x = proportion_females)) +
   geom_histogram(binwidth = 0.05, boundary = 0.4, color = "red") +
   labs(x = "Proportion of females", title = "1000")
 ```
-
+I have used the same functions for all three simulations above, with the only difference being that I have used different sample sizes for each of those. For the first one, I have used 50, for the second one, I have used 100, and for the third one, I have used 1000. We can see that as the sample size increases, variation decreases. If we look closely, all three histograms seem to be relaying the same message, that the proportion of females between 0.00 and 0.05 is the largest with the count of around 6500. 0.05-0.10 having the second biggest count, and it continues to decrease from there while maintaining almost the same count despite such difference in the sample sizes.
