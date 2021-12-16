@@ -2,8 +2,12 @@
 title: "Project1"
 author: "Sarba"
 date: "11/23/2021"
-output: html_document
+output:
+  word_document: default
+  html_document: default
+  pdf_document: default
 ---
+
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -14,16 +18,22 @@ library(tidyverse)
 library(moderndive)
 ```
 
+I can import datasets from various sources:
 
 ```{r}
 # Importing data
 data <- read_csv("/home/upretys/STA 518/Project/Project1/data.csv")
 ```
+I imported the dataset using the read_csv function from my GitHub account.
+
+
 ```{r}
 # Dropping NAs
 data <- data %>%
   drop_na()
 ```
+
+In almost every dataset, there are missing values. I used the above function to remove all the missing values so that I can work with a tidier dataset.
 
 ```{r}
 # Calculating mean of each columns without using for loop
@@ -37,22 +47,15 @@ mean(data$elapse)
 # Calculating the average score
 mean(data$score)
 ```
-
-
-
-```{r} 
-# Calculating median of each column using for loop
-output <- vector("double", ncol(df))
-for (i in seq_along(df)) {            
-  output[[i]] <- median(df[[i]]) }
-
-```
+The mean age of the participants is 34.01423. The average time they took to complete the survey was 119554.2 seconds. The average score of the participants was 13.29965. I used the mean() function to calculate the average of certain columns by extracting those using $ from the dataset.
 
 
 ```{r}
 max(data$age)
 ```
+The oldest participant was 509 years old.I used the max function to calculate the maximum age of the participants.
 
+I can tidy datasets and isolate information from the datasets:
 ```{r}
 # Isolating score, elapse, gender, and age from a larger dataset)
 df <- data %>%
@@ -60,9 +63,20 @@ df <- data %>%
   mutate(Number = sample(1:11243))
 ```
 
+The original dataset had a lot of columns that were not very relevant. So, I used the select function to select only the columns that were relevant for my project using the select function. I used the sample() function to randomly assign an ID to the participants, and then used the mutate function to create a new column with the IDs.
+
+```{r} 
+# Calculating median of each column using for loop
+med <- vector("double", ncol(df))
+for (i in sequence(ncol(df))) { 
+  med[i] = median(df[[i]]) 
+  }
+```
+
+
 
 ```{r}
-#Removig Data
+#Removing Data
 #rm(cleaned_data)
 #rm(data)
 #rm(highest_top10)
@@ -71,7 +85,7 @@ df <- data %>%
 #rm(df)
 ```
 
-
+Tidying the data by replacing values:
 ```{r}
 # Replacing the values "1" and "2" in "Gender" column to "Male" and "Female"
 df <- within(df, gender[gender == '1'] <- 'Male')
@@ -80,7 +94,7 @@ df <- within(df, gender[gender == '3'] <- 'Non-Binary')
 df <- within(df, gender[gender == '0'] <- 'Not Specified')
 ```
 
-
+Previously, the dataset included 1,2,3 and 0 in the 'gender' column which was hard to understand and use to visualize the dataset. So, I used the within function to replace it with values that have meanings and is easy to understand. For example, Male is easier to understand than 1 in the gender column.
 
 ```{r}
 # Arranging the scores in a descending order to find the top 10 highest scoring age a
@@ -94,6 +108,10 @@ lowest_top10 <- df %>%
   arrange(score) %>%
   slice(1:10)
 ```
+The table above shows the highest scores and who achieved it.
+
+
+I am capable of creating graphical displays and numerical summaries of data for exploratory analysis and presentations:
 
 ```{r}
 # Data Visualization to find the total number of people of certain age.
@@ -104,7 +122,10 @@ ggplot(data = df) +
 ggplot(data = df) +
   geom_bar(mapping = aes(x = gender))
 ```
+I have used ggplot to visualize the data. From the above graph, we can see that male participants had the highest count with around 6500 participants, females had the second highest with around 4500 participants, non-binary participants came in third with a count of less than perhaps 50, and participants who had not specified their gender came in last with a count of perhaps 10.
 
+
+Estimating the proportion of females when a random sampling is drawn:
 ```{r}
 # Random sampling to find out the proportions of females in the dataset
 
